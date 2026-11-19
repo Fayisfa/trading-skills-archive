@@ -31,15 +31,16 @@ trading considerations specific to the Indian derivatives market.
 
 | Parameter       | NIFTY 50        | BANK NIFTY      | FINNIFTY        | MIDCAP NIFTY    |
 |-----------------|-----------------|-----------------|-----------------|-----------------|
-| Lot Size        | 75 (verify)     | 15 (verify)     | 25              | 50              |
+| Lot Size        | 65              | 30              | 60              | 120             |
 | Tick Size       | 0.05            | 0.05            | 0.05            | 0.05            |
 | Strike Interval | 50              | 100             | 50              | 25              |
-| Expiry          | Weekly (Thu)    | Weekly (Wed)    | Weekly (Tue)    | Monthly (Mon)   |
+| Expiry          | Weekly (Tue)    | Monthly (last Tue) | Monthly (last Tue) | Monthly (last Tue) |
 | Settlement      | Cash            | Cash            | Cash            | Cash            |
 | Exercise        | European        | European        | European        | European        |
 
 Note: Lot sizes are revised periodically by the exchange. Always verify the current
-lot size using `fno_mcx_contracts_search_tool` before trading.
+lot size using `fno_mcx_contracts_search_tool` before trading. Values above are from the
+NSE revision effective the January 2026 series.
 
 #### Stock Options
 
@@ -48,7 +49,7 @@ lot size using `fno_mcx_contracts_search_tool` before trading.
 | Lot Size        | Varies by stock (set by exchange)              |
 | Tick Size       | 0.05                                           |
 | Strike Interval | Varies by stock price level                    |
-| Expiry          | Monthly only (last Thursday of the month)      |
+| Expiry          | Monthly only (last Tuesday of the month)       |
 | Settlement      | Physical delivery (shares change hands)        |
 | Exercise        | European                                       |
 
@@ -59,7 +60,7 @@ lot size using `fno_mcx_contracts_search_tool` before trading.
 | Contract Months | Near, Next, Far | Near, Next, Far |
 | Lot Size        | Same as options | Same as options |
 | Settlement      | Cash (daily MTM)| Physical (at expiry) |
-| Last Trading Day| Last Thursday of expiry month                  |
+| Last Trading Day| Last Tuesday of expiry month                   |
 
 ### Trading Hours
 
@@ -71,12 +72,15 @@ lot size using `fno_mcx_contracts_search_tool` before trading.
 
 ### Expiry Schedule
 
-- **NIFTY:** Every Thursday (weekly) + last Thursday of month (monthly)
-- **BANK NIFTY:** Every Wednesday (weekly) + last Wednesday of month (monthly)
-- **FINNIFTY:** Every Tuesday (weekly)
-- **SENSEX (BSE):** Every Friday (weekly)
-- **Stock Options:** Last Thursday of month only
-- **Stock Futures:** Last Thursday of month
+- **NIFTY:** Every Tuesday (weekly) + last Tuesday of month (monthly)
+- **BANK NIFTY / FINNIFTY / MIDCAP NIFTY:** Last Tuesday of month (monthly only;
+  their weekly contracts were discontinued in November 2024)
+- **SENSEX (BSE):** Every Thursday (weekly) + last Thursday of month (monthly)
+- **Stock Options:** Last Tuesday of month only
+- **Stock Futures:** Last Tuesday of month
+
+SEBI allows only one weekly index expiry per exchange. This schedule reflects the
+September 2025 expiry-day change.
 
 If the scheduled expiry day is a trading holiday, the expiry moves to the
 preceding trading day.
@@ -168,26 +172,26 @@ Penalties are levied per day and compounded for repeat offenses within a month.
 
 ### Securities Transaction Tax (STT)
 
-STT is a tax levied by the government on securities transactions.
+STT is a tax levied by the government on securities transactions. Rates below
+are effective 1 April 2026 (Union Budget 2026-27).
 
 | Transaction               | STT Rate                    | Levied On        |
 |---------------------------|-----------------------------|------------------|
-| Futures (sell)            | 0.0125%                     | Sell turnover     |
-| Options (sell)            | 0.0625%                     | Sell premium      |
-| Options (exercise at expiry, ITM) | 0.0625%            | Intrinsic value   |
+| Futures (sell)            | 0.05%                       | Sell turnover     |
+| Options (sell)            | 0.15%                       | Sell premium      |
+| Options (exercise at expiry, ITM) | 0.15%               | Intrinsic value (paid by buyer) |
 
 **Critical STT Trap for Options:**
-When an option expires in-the-money (ITM), STT is levied on the entire
-intrinsic value (settlement value), not just the premium. This can result in
-STT exceeding the actual profit.
+When a long option expires in-the-money (ITM), the buyer pays STT on the full
+intrinsic value (settlement value). Squaring off before expiry instead charges
+0.15% on the sell premium, which is usually similar or smaller, but exercise
+STT on a large ITM position can still eat into a small profit.
 
-Example:
-- You sell a NIFTY 24000 CE at Rs. 5 (premium received: 5 x 75 = Rs. 375).
-- NIFTY expires at 24010 (option is ITM by Rs. 10).
-- Intrinsic value on exercise: 10 x 75 = Rs. 750.
-- STT on exercise: 0.0625% of Rs. 750 = Rs. 0.47 per share = Rs. 35.16.
-- But if NIFTY expires at 24200, intrinsic value = 200 x 75 = Rs. 15,000.
-- STT = 0.0625% of Rs. 15,000 = Rs. 9.38.
+Example (NIFTY lot size 65):
+- You buy a NIFTY 24000 CE. NIFTY expires at 24200 (ITM by Rs. 200).
+- Intrinsic value on exercise: 200 x 65 = Rs. 13,000.
+- STT on exercise: 0.15% of Rs. 13,000 = Rs. 19.50 per lot.
+- Across 20 lots that is Rs. 390, on top of exchange charges and GST.
 
 For deep ITM options at expiry, this tax can be substantial. Always square off
 ITM positions before expiry to avoid the exercise-based STT.
@@ -196,21 +200,21 @@ ITM positions before expiry to avoid the exercise-based STT.
 
 | Charge                    | Rate (approximate)          |
 |---------------------------|-----------------------------|
-| Exchange Transaction Fee  | ~0.05% (NSE)                |
+| Exchange Transaction Fee  | 0.03503% of premium (NSE)   |
 | SEBI Turnover Fee         | Rs. 10 per crore            |
 | GST                       | 18% on brokerage + fees     |
 | Stamp Duty                | 0.003% (buy side) for options|
 
 ### Total Cost Per Trade (Approximate)
 
-For a typical NIFTY option trade (1 lot, premium Rs. 100):
-- Brokerage: Rs. 20 (flat per order, typical discount broker)
-- STT: Rs. 4.69 (on sell)
-- Exchange charges: Rs. 3.97
-- GST: Rs. 4.31
-- SEBI fee: Rs. 0.08
-- Stamp duty: Rs. 0.23
-- **Total: approximately Rs. 33 per side**
+For a typical NIFTY option trade (1 lot of 65, premium Rs. 100 = Rs. 6,500 turnover):
+- Brokerage: Rs. 20 per order (typical discount broker)
+- STT: Rs. 9.75 (0.15%, sell side only)
+- Exchange charges: Rs. 2.28 per side
+- GST: Rs. 4.01 per side (18% on brokerage + exchange charges)
+- SEBI fee: about Rs. 0.01
+- Stamp duty: Rs. 0.20 (buy side only)
+- **Total: about Rs. 26.50 on the buy side and Rs. 36 on the sell side (about Rs. 62.50 round trip)**
 
 ---
 
@@ -549,10 +553,10 @@ identify stocks in or near ban.
 
 ## 10. Common Strategies for Indian Traders
 
-### Strategy 1: Nifty Short Straddle on Thursday Expiry
+### Strategy 1: Nifty Short Straddle on Tuesday Expiry
 
 **Setup:**
-- Sell NIFTY ATM CE + ATM PE on Thursday morning (expiry day).
+- Sell NIFTY ATM CE + ATM PE on Tuesday morning (expiry day).
 - Or deploy 1-2 days before expiry for more premium.
 
 **Rationale:**
@@ -567,12 +571,13 @@ identify stocks in or near ban.
 **Capital Required:** SPAN + Exposure margin for 2 naked option legs (typically
 Rs. 1,50,000 - Rs. 2,00,000 per lot for the straddle).
 
-### Strategy 2: Bank Nifty Iron Condor on Wednesday Expiry
+### Strategy 2: Bank Nifty Iron Condor on Monthly Expiry
 
 **Setup:**
 - Sell OTM Call + Sell OTM Put.
 - Buy further OTM Call + Buy further OTM Put (wings for protection).
-- Deploy 1-2 days before Wednesday expiry.
+- Deploy in the final week before the monthly expiry (last Tuesday).
+  Bank Nifty has no weekly contracts, so theta decay is slower than Nifty weeklies.
 
 **Rationale:**
 - Bank Nifty is more volatile than Nifty, so premiums are richer.
@@ -667,7 +672,7 @@ positions based on a fixed percentage of capital at risk.
   - Short put: 23800, Long put: 23500 (width = 300)
   - Short call: 24200, Long call: 24500 (width = 300)
   - Net credit: Rs. 80 per share
-  - Max loss per lot: (300 - 80) x 75 = Rs. 16,500
+  - Max loss per lot: (300 - 80) x 65 = Rs. 14,300
 - Number of lots: 20,000 / 16,500 = 1.21 -> trade 1 lot.
 
 ### Capital Allocation Guidelines

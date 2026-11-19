@@ -15,7 +15,7 @@ This skill enables comprehensive technical analysis of weekly price charts for I
 - **Key Indices**: Nifty 50, Bank Nifty, Nifty IT, Nifty Pharma, Sensex
 - **Circuit Limits**: Individual stocks have daily upper/lower circuit limits (2%, 5%, 10%, 20%) which can affect pattern interpretation
 - **Settlement**: T+1 settlement for equities
-- **F&O Expiry**: Weekly (Thursday) for index options, monthly for stock options
+- **F&O Expiry**: Nifty weekly on Tuesday (NSE), Sensex weekly on Thursday (BSE); Bank Nifty and stock options monthly (last Tuesday)
 - **Currency**: All analysis in INR (₹)
 
 ## Core Principles

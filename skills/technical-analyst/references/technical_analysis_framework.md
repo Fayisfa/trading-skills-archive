@@ -12,7 +12,7 @@ This reference provides the methodology for conducting objective, chart-based te
 ## Indian Market Considerations
 
 - **Circuit Limits**: NSE/BSE stocks have daily circuit limits (2%, 5%, 10%, 20%). Upper/lower circuits can create gap-up/gap-down patterns that affect weekly candle shapes. Stocks hitting circuits repeatedly may show compressed patterns on weekly charts.
-- **F&O Expiry Effects**: Weekly/monthly options expiry (typically Thursday) can cause increased volatility. Pin risk near round-number strikes affects price action near those levels.
+- **F&O Expiry Effects**: Weekly/monthly options expiry (Tuesday for NSE/Nifty, Thursday for BSE/Sensex) can cause increased volatility. Pin risk near round-number strikes affects price action near those levels.
 - **Trading Hours**: 9:15 AM – 3:30 PM IST. Opening 15 minutes typically show high volatility.
 - **T+1 Settlement**: Affects volume patterns near settlement dates.
 - **Sectoral Rotation**: Key NSE sectoral indices (Nifty IT, Bank Nifty, Nifty Pharma, Nifty Auto, Nifty FMCG, Nifty Metal) show distinct rotation patterns tied to global and domestic themes.

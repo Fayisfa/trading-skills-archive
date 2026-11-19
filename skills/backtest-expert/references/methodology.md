@@ -221,13 +221,13 @@ Double all the above values. If the strategy is still profitable, it is robust t
 
 ## Commission Structure
 
-### Discount Broker (Zerodha, Groww, etc.) — 2024/2025 Rates
+### Discount Broker (Zerodha, Groww, etc.) — rates as of April 2026
 
 | Component | Delivery (CNC) | Intraday (MIS) | F&O Futures | F&O Options |
 |-----------|----------------|-----------------|-------------|-------------|
 | **Brokerage** | Rs 0 or Rs 20/order | Rs 20/order or 0.03% | Rs 20/order or 0.03% | Rs 20/order flat |
-| **STT** | 0.1% (buy+sell) | 0.025% (sell only) | 0.0125% (sell) | 0.0625% on premium (sell) |
-| **Exchange charges** | 0.00345% (NSE) | 0.00345% (NSE) | 0.002% | 0.05% |
+| **STT** | 0.1% (buy+sell) | 0.025% (sell only) | 0.05% (sell) | 0.15% on premium (sell) |
+| **Exchange charges** | 0.00297% (NSE) | 0.00297% (NSE) | 0.00173% | 0.03503% of premium |
 | **GST** | 18% on (brokerage + exchange) | 18% | 18% | 18% |
 | **Stamp duty** | 0.015% (buy) | 0.003% (buy) | 0.002% (buy) | 0.003% (buy) |
 | **SEBI charges** | 0.0001% | 0.0001% | 0.0001% | 0.0001% |

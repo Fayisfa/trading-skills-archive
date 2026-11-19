@@ -218,8 +218,11 @@ get_atm_straddle_chart(symbol="{symbol}")
 | Any | Very High | Pre-event | Straddle/strangle (if event binary) |
 
 3. **Expiry selection**:
-   - **Current week expiry**: Only if entering Mon-Tue with high conviction
-   - **Next week expiry**: Default choice — gives 7-12 days
+   - Nifty weekly options expire on **Tuesday** (Sensex weeklies on Thursday, BSE).
+     Bank Nifty, FinNifty, Midcap Nifty and stock options are **monthly only**
+     (last Tuesday of the month).
+   - **Current week expiry**: Avoid. From Wednesday to Monday it has at most 4 trading days, and on Monday only 1
+   - **Next week expiry**: Default choice for Nifty — gives 6-10 days
    - **Monthly expiry**: For lower conviction or swing trades
    - **Rule**: Never buy options with < 3 days to expiry unless very high conviction
 
@@ -243,9 +246,14 @@ get_available_margin_details()
 get_margins()
 ```
 
-   - **Max risk per trade**: 30-40% of capital for single directional bet
+   - **Max risk per trade**: 2% of total capital, where risk = (entry premium - SL premium) x quantity
+   - **Max premium deployed**: 10% of total capital per trade (bought options can go to zero)
    - **Preferred**: Split into 2-3 lots for scaling in/out
-   - **Never**: Risk more than 50% of capital on a single trade
+   - **Never**: Deploy more than 20% of capital in one trade, even at conviction 5
+   - If the capital cannot fit 1 lot within these limits, say so and suggest a
+     smaller instrument or no trade. Do not stretch the limits to make a trade fit.
+   - Context: SEBI's September 2024 study found about 93% of individual F&O traders
+     lost money over FY22-FY24. Keep this in front of the user.
 
 6. **Define entry plan**:
    - **Entry trigger**: Specific price level or technical confirmation
@@ -392,7 +400,7 @@ vs. buying AFTER gap:   Premium will be ₹{expensive_price}
 ### Critical Rules for Pre-Gap Entry
 
 1. **Only with conviction >= 4** — Don't gamble on uncertain gaps
-2. **Max 40% of capital** — Even with high conviction, respect position limits
+2. **Same limits as any trade** — max 2% capital at risk and 10% premium deployed, even with high conviction
 3. **Always use monthly expiry** for pre-gap entries — gives time if gap is delayed
 4. **Set SL immediately** — Pre-gap entries can go wrong (gap doesn't materialize)
 5. **If gap doesn't happen next day** — Hold if thesis is intact, exit if thesis breaks
@@ -579,7 +587,7 @@ Exit the ENTIRE position when:
 - **Time decay risk**: < 2 days to expiry and position is OTM
 - **IV crush**: After a binary event, IV drops killing premium even if direction is right
 - **Weekend risk**: For weekly expiry options, exit Friday unless very high conviction
-- **Overexposure**: If unrealized P&L exceeds 50% of total capital, take some off
+- **Overexposure**: If the position's value grows beyond 20% of total capital, book partial profits
 
 ### Exit Execution
 
@@ -612,16 +620,17 @@ place_order(
 
 ## Risk Management Rules (Non-Negotiable)
 
-1. **Max capital at risk**: 40% of total capital per trade
+1. **Max capital at risk**: 2% of total capital per trade (loss to stop-loss); max 10% of capital in premium
 2. **Always set SL**: Never hold a position without a stop-loss GTT
 3. **No averaging down**: If SL is hit, accept the loss. Don't add to losers.
 4. **Weekend rule**: Exit weekly expiry options before Friday close unless thesis is very strong
 5. **Theta awareness**: Options lose ~30-50% of remaining time value over a weekend
 6. **IV awareness**: After a big event, IV crushes. Factor this into hold decisions.
 7. **No revenge trading**: If a trade is stopped out, wait for the next clean setup
-8. **Position limit**: Max 2 open F&O positions at any time
+8. **Position limit**: Max 2 open F&O positions at any time, with combined risk under 4% of capital
 9. **Cancel orphaned GTTs**: After every exit, clean up ALL related GTT orders
 10. **Journal the trade**: Record entry reason, exit reason, P&L, and lessons learned
+11. **Confirm every order**: Show the full order (symbol, qty, price, SL) and wait for an explicit "yes" before calling any place/modify/cancel tool
 
 ---
 

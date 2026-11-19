@@ -363,7 +363,7 @@ When the Nifty 50 makes a new high but breadth indicators do not confirm, it sig
 
 ## India-Specific Nuances
 
-- **F&O Expiry Effects:** Weekly and monthly F&O expiry Thursdays can distort breadth readings due to derivatives-related hedging and unwinding. Flag expiry-day breadth readings and consider using the non-expiry-day average for comparison.
+- **F&O Expiry Effects:** Weekly and monthly F&O expiry days (Tuesday on NSE, Thursday on BSE) can distort breadth readings due to derivatives-related hedging and unwinding. Flag expiry-day breadth readings and consider using the non-expiry-day average for comparison.
 - **Budget and RBI Policy Weeks:** Union Budget day and RBI monetary policy announcement days create abnormal breadth swings. Note these as event-driven rather than trend-driven.
 - **FII/DII Flow Correlation:** Sustained FII selling often narrows breadth from the large-cap end first, while DII buying may support mid/small caps, creating a cap-tier divergence.
 - **SEBI Regulatory Impact:** Regulations like small-cap mutual fund stress tests can cause episodic breadth disruptions in the small-cap tier — these are flow-driven, not fundamental.

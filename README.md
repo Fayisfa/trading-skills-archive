@@ -12,15 +12,17 @@ A collection of [Claude Skills](https://docs.anthropic.com/en/docs/claude-code/s
 
 **No API keys required** for most skills. Uses free data sources (yfinance, niftystocks) and optionally integrates with [Groww MCP](https://groww.in) or [Zerodha Kite MCP](https://github.com/zerodha/kite-mcp-server) for live market data and trading.
 
-Adapted from [tradermonty/claude-trading-skills](https://github.com/tradermonty/claude-trading-skills) (US markets) for Indian markets.
+Forked from [ajeeshworkspace/indian-trading-skills](https://github.com/ajeeshworkspace/indian-trading-skills), which adapted [tradermonty/claude-trading-skills](https://github.com/tradermonty/claude-trading-skills) (US markets) for Indian markets.
+
+> Market rules (expiry days, lot sizes, STT) were last checked in November 2026. Exchanges change them often, so verify against current NSE/BSE circulars before trading.
 
 ## Quick Start
 
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/ajeeshworkspace/indian-trading-skills.git
-cd indian-trading-skills
+git clone https://github.com/Fayisfa/trading-skills-archive.git
+cd trading-skills-archive
 ```
 
 ### 2. Install dependencies
@@ -48,7 +50,7 @@ Just talk to Claude naturally:
 "Analyze Reliance Industries stock fundamentals"
 "Screen Nifty 500 for VCP breakout setups"
 "What's the market impact if RBI cuts rates by 50 bps?"
-"Build an iron condor on Bank Nifty for this week's expiry"
+"Build an iron condor on Nifty for this week's expiry"
 "How healthy is the broad market right now?"
 "Evaluate my backtest — 150 trades, 58% win rate, 1.8 profit factor"
 "What are FII/DII flows telling us this month?"
@@ -141,20 +143,23 @@ Recommends and prices options strategies for NSE F&O. Full Black-Scholes engine 
 ```bash
 # Price a call option
 python3 skills/options-strategy-advisor/scripts/black_scholes.py price \
-  --spot 24000 --strike 24500 --expiry 7 --vol 0.15 --rate 0.065 --type call
+  --spot 24000 --strike 24500 --expiry-days 7 --vol 0.15 --rate 0.065 --type CALL
 
 # Calculate Greeks
 python3 skills/options-strategy-advisor/scripts/black_scholes.py greeks \
-  --spot 24000 --strike 24500 --expiry 7 --vol 0.15
+  --spot 24000 --strike 24500 --expiry-days 7 --vol 0.15 --type CALL
 
 # Solve implied volatility
 python3 skills/options-strategy-advisor/scripts/black_scholes.py iv \
-  --spot 24000 --strike 24500 --expiry 7 --price 120 --type call
+  --spot 24000 --strike 24500 --expiry-days 7 --market-price 120 --type CALL
 
 # Build iron condor with P/L diagram
 python3 skills/options-strategy-advisor/scripts/black_scholes.py strategy \
-  --name iron_condor --spot 24000 --expiry 7 --vol 0.15 \
-  --strikes 23500 23800 24200 24500
+  --type iron-condor --spot 24000 \
+  --put-buy-strike 23500 --put-sell-strike 23800 \
+  --call-sell-strike 24200 --call-buy-strike 24500 \
+  --put-buy-premium 20 --put-sell-premium 60 \
+  --call-sell-premium 65 --call-buy-premium 22
 ```
 
 **17 strategies supported:** Covered calls, protective puts, bull/bear spreads, straddles, strangles, iron condors, iron butterflies, calendar spreads, diagonal spreads, ratio spreads.
@@ -171,9 +176,9 @@ Validates trading strategy backtests with India-specific cost modeling and overf
 **Standalone CLI usage:**
 ```bash
 python3 skills/backtest-expert/scripts/evaluate_backtest.py \
-  --trades 150 --win-rate 0.58 --avg-win 2.5 --avg-loss 1.2 \
-  --max-drawdown 15 --years 3 --parameters 4 \
-  --slippage-modeled --segment delivery --format both
+  --total-trades 150 --win-rate 58 --avg-win-pct 2.5 --avg-loss-pct 1.2 \
+  --max-drawdown-pct 15 --years-tested 3 --num-parameters 4 \
+  --slippage-tested --include-india-costs --trade-type delivery --output both
 ```
 
 **India-specific costs modeled:** STT, stamp duty, exchange transaction charges, SEBI turnover fees, GST — for delivery, intraday, and F&O segments.
@@ -237,12 +242,12 @@ Complete weekly F&O trading workflow — from macro thesis to position managemen
 5. **Execution** — place orders with GTT stop-loss and profit targets
 6. **Position Management** — daily monitoring, SL tightening ladder, partial profit booking (40-50% at T1, 30% at T2, trail rest)
 
-**Built-in risk rules:** Max 40% capital per trade, mandatory GTT stop-loss, weekend exit rule for weekly expiry, no averaging down, orphaned GTT cleanup after every exit.
+**Built-in risk rules:** Max 2% of capital at risk per trade (10% max in premium), explicit confirmation before every order, mandatory GTT stop-loss, weekend exit rule for weekly expiry, no averaging down, orphaned GTT cleanup after every exit.
 
 ## Project Structure
 
 ```
-indian-trading-skills/
+trading-skills-archive/
 ├── README.md
 ├── LICENSE
 ├── pyproject.toml
@@ -359,7 +364,9 @@ Groww MCP is available as a connector in Claude. Connect it from the MCP connect
 | Currency | INR (all prices in rupees) |
 | Trading Hours | 9:15 AM – 3:30 PM IST |
 | Settlement | T+1 for equities |
-| F&O Expiry | Weekly (Thu) for index options, monthly for stock options |
+| F&O Expiry | Nifty weekly on Tuesday (NSE), Sensex weekly on Thursday (BSE); Bank Nifty, FinNifty, Midcap Nifty and stock options monthly only (last Tuesday) |
+| Index lot sizes | Nifty 65, Bank Nifty 30, FinNifty 60, Midcap Nifty 120, Sensex 20 (from the January 2026 series) |
+| STT on F&O | Options 0.15% of sell premium, futures 0.05% of sell turnover (from 1 April 2026) |
 | Circuit Limits | 2%, 5%, 10%, 20% daily limits |
 | Regulator | SEBI |
 | Key Indices | Nifty 50, Sensex, Bank Nifty, Nifty IT, Nifty Pharma |

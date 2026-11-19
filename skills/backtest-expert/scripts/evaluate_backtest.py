@@ -115,20 +115,22 @@ def calculate_india_costs(
     elif trade_type == "intraday":
         stt = avg_trade_value * 0.00025  # 0.025% on sell only
     elif trade_type == "fno_options":
-        stt = avg_trade_value * 0.000125  # 0.0125% on sell (options, on premium)
+        stt = avg_trade_value * 0.0015  # 0.15% on sell premium (from 1 Apr 2026)
     elif trade_type == "fno_futures":
-        stt = avg_trade_value * 0.000125  # 0.0125% on sell
+        stt = avg_trade_value * 0.0005  # 0.05% on sell (from 1 Apr 2026)
     else:
         stt = avg_trade_value * 0.001 * 2  # Default to delivery
 
     costs["stt"] = stt
     costs["stt_pct"] = (stt / avg_trade_value) * 100
 
-    # Exchange transaction charges (NSE)
-    if trade_type in ("fno_options",):
-        exchange_rate = 0.0005  # 0.05% for options
+    # Exchange transaction charges (NSE uniform rates since 1 Oct 2024)
+    if trade_type == "fno_options":
+        exchange_rate = 0.0003503  # 0.03503% of premium
+    elif trade_type == "fno_futures":
+        exchange_rate = 0.0000173  # 0.00173% of turnover
     else:
-        exchange_rate = 0.0000345  # 0.00345% for equity
+        exchange_rate = 0.0000297  # 0.00297% for equity
 
     exchange_charges = avg_trade_value * exchange_rate * 2  # Buy + sell
     costs["exchange_charges"] = exchange_charges

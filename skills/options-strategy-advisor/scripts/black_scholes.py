@@ -28,12 +28,13 @@ from typing import List, Optional, Tuple
 INDIA_RISK_FREE_RATE = 0.07  # ~7% (91-day T-bill rate approximation)
 TRADING_DAYS_PER_YEAR = 252  # NSE trading days per year
 
-# Common NSE F&O lot sizes (reference values — verify via MCP before trading)
+# NSE F&O lot sizes from the revision effective the January 2026 series
+# (reference values — verify via MCP before trading)
 DEFAULT_LOT_SIZES = {
-    "NIFTY": 75,
-    "BANKNIFTY": 15,
-    "FINNIFTY": 25,
-    "MIDCPNIFTY": 50,
+    "NIFTY": 65,
+    "BANKNIFTY": 30,
+    "FINNIFTY": 60,
+    "MIDCPNIFTY": 120,
 }
 
 
@@ -926,7 +927,7 @@ def build_bull_call_spread(
     lower_premium: float,
     upper_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Bull Call Spread: Buy lower strike call, sell upper strike call."""
     return [
@@ -941,7 +942,7 @@ def build_bear_put_spread(
     upper_premium: float,
     lower_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Bear Put Spread: Buy higher strike put, sell lower strike put."""
     return [
@@ -956,7 +957,7 @@ def build_bull_put_spread(
     upper_premium: float,
     lower_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Bull Put Spread: Sell higher strike put, buy lower strike put."""
     return [
@@ -971,7 +972,7 @@ def build_bear_call_spread(
     lower_premium: float,
     upper_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Bear Call Spread: Sell lower strike call, buy upper strike call."""
     return [
@@ -985,7 +986,7 @@ def build_long_straddle(
     call_premium: float,
     put_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Long Straddle: Buy ATM call and ATM put at same strike."""
     return [
@@ -999,7 +1000,7 @@ def build_short_straddle(
     call_premium: float,
     put_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Short Straddle: Sell ATM call and ATM put at same strike."""
     return [
@@ -1014,7 +1015,7 @@ def build_long_strangle(
     call_premium: float,
     put_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Long Strangle: Buy OTM call and OTM put."""
     return [
@@ -1029,7 +1030,7 @@ def build_short_strangle(
     call_premium: float,
     put_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """Build a Short Strangle: Sell OTM call and OTM put."""
     return [
@@ -1048,7 +1049,7 @@ def build_iron_condor(
     call_sell_premium: float,
     call_buy_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """
     Build an Iron Condor:
@@ -1071,7 +1072,7 @@ def build_iron_butterfly(
     atm_call_premium: float,
     call_buy_premium: float,
     lots: int = 1,
-    lot_size: int = 75,
+    lot_size: int = 65,
 ) -> List[OptionLeg]:
     """
     Build an Iron Butterfly:
@@ -1110,16 +1111,16 @@ Examples:
   # Analyze a Bull Call Spread
   python black_scholes.py strategy --type bull-call-spread \\
       --spot 24000 --lower-strike 24000 --upper-strike 24500 \\
-      --lower-premium 250 --upper-premium 80 --lot-size 75
+      --lower-premium 250 --upper-premium 80 --lot-size 65
 
   # Analyze a Short Straddle
   python black_scholes.py strategy --type short-straddle \\
       --spot 24000 --atm-strike 24000 \\
-      --call-premium 200 --put-premium 180 --lot-size 75
+      --call-premium 200 --put-premium 180 --lot-size 65
 
   # Analyze an Iron Condor
   python black_scholes.py strategy --type iron-condor \\
-      --spot 24000 --lot-size 75 \\
+      --spot 24000 --lot-size 65 \\
       --put-buy-strike 23500 --put-sell-strike 23800 \\
       --call-sell-strike 24200 --call-buy-strike 24500 \\
       --put-buy-premium 30 --put-sell-premium 70 \\
@@ -1177,7 +1178,7 @@ Examples:
         help="Strategy type",
     )
     strat_parser.add_argument("--spot", type=float, required=True, help="Underlying spot price")
-    strat_parser.add_argument("--lot-size", type=int, default=75, help="Lot size (default: 75 for NIFTY)")
+    strat_parser.add_argument("--lot-size", type=int, default=65, help="Lot size (default: 65 for NIFTY)")
     strat_parser.add_argument("--lots", type=int, default=1, help="Number of lots (default: 1)")
 
     # Strike arguments for various strategies

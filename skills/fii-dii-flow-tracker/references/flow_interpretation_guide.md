@@ -336,7 +336,7 @@ Flow data becomes much more powerful when combined with other market indicators:
 
 **Why it is wrong:** Certain calendar events create mechanical flows that do not reflect genuine positioning changes:
 - MSCI/FTSE quarterly rebalancing (February, May, August, November) triggers passive FII flows.
-- F&O monthly expiry (last Thursday) creates hedging-related cash market flows.
+- F&O monthly expiry (last Tuesday on NSE) creates hedging-related cash market flows.
 - Quarterly earnings season triggers stock-specific institutional activity.
 - March (FY end) triggers tax-related and rebalancing flows.
 

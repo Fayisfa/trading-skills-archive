@@ -16,6 +16,7 @@ dependencies = [
     "yfinance>=0.2.36",
     "pandas>=2.0",
     "niftystocks>=0.0.2",
+    "feedparser>=6.0",
 ]
 
 [project.optional-dependencies]
@@ -32,12 +33,3 @@ target-version = "py39"
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "UP", "B"]
 ignore = ["E501", "E402"]
-
-[tool.pytest.ini_options]
-addopts = "--import-mode=importlib"
-testpaths = [
-    "skills/nse-vcp-screener/scripts/tests",
-    "skills/india-stock-analysis/scripts/tests",
-    "skills/options-strategy-advisor/scripts/tests",
-    "skills/backtest-expert/scripts/tests",
-]

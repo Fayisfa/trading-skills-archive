@@ -498,7 +498,7 @@ Scores between 45-55 (mid-Neutral zone) are the hardest to act on. The market co
 
 ### F&O Expiry Effects on Breadth
 
-Weekly expiry (Thursday) and monthly expiry (last Thursday of the month) can distort breadth readings:
+Weekly expiry (Nifty on Tuesday, Sensex on Thursday) and monthly expiry (last Tuesday of the month on NSE) can distort breadth readings:
 
 - **Expiry-day impact:** Delta-hedging by market makers and unwinding of positions can cause artificial price moves in F&O stocks, distorting the A/D ratio.
 - **Monthly expiry:** More significant distortion as all stock F&O contracts expire. High open interest stocks can see sharp moves.

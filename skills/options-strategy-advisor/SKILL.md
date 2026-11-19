@@ -29,23 +29,31 @@ Indian F&O trading.
 ### Expiry Schedule
 | Underlying   | Expiry Day  | Expiry Type          |
 |--------------|-------------|----------------------|
-| NIFTY        | Thursday    | Weekly + Monthly     |
-| BANK NIFTY   | Wednesday   | Weekly + Monthly     |
-| FINNIFTY     | Tuesday     | Weekly + Monthly     |
-| SENSEX (BSE) | Friday      | Weekly + Monthly     |
-| Stock Options | Last Thursday | Monthly only       |
+| NIFTY        | Tuesday     | Weekly + Monthly (last Tuesday) |
+| BANK NIFTY   | Last Tuesday | Monthly only        |
+| FINNIFTY     | Last Tuesday | Monthly only        |
+| MIDCAP NIFTY | Last Tuesday | Monthly only        |
+| SENSEX (BSE) | Thursday    | Weekly + Monthly (last Thursday) |
+| Stock Options | Last Tuesday | Monthly only       |
 
-- Monthly expiry is the last Thursday of the month (or preceding trading day if
-  Thursday is a holiday).
-- Weekly expiries are available only for index options, not individual stocks.
+- NSE monthly expiry is the last Tuesday of the month; BSE monthly expiry is the
+  last Thursday. If the expiry day is a holiday, it moves to the preceding trading day.
+- Since November 2024 SEBI allows only ONE weekly index expiry per exchange:
+  NIFTY on NSE and SENSEX on BSE. Bank Nifty, FinNifty and Midcap Nifty weeklies
+  were discontinued. Weekly expiries do not exist for individual stocks.
+- Schedule as of the September 2025 expiry-day change. Re-check NSE/BSE circulars
+  if anything looks off.
 
 ### Lot Sizes
 Lot sizes are periodically revised by the exchanges. Always verify current lot
 sizes using the Groww MCP tool `fno_mcx_contracts_search_tool` before calculating
 margin or position size. Recent reference values:
-- NIFTY: 75 (recently changed — confirm via MCP)
-- BANK NIFTY: 15 (recently changed — confirm via MCP)
-- FINNIFTY: 25
+Values from the NSE revision effective the January 2026 series:
+- NIFTY: 65
+- BANK NIFTY: 30
+- FINNIFTY: 60
+- MIDCAP NIFTY: 120
+- SENSEX (BSE): 20
 - Stock options: Varies by stock (check contract specifications)
 
 ### Margin Requirements
@@ -58,9 +66,10 @@ SEBI mandates the following margin components for F&O:
 Use `calculate_fno_margin` to get exact margin for any trade before placing it.
 
 ### Transaction Costs
-- **STT (Securities Transaction Tax):** Levied on the sell side of options at
-  0.0625% of the intrinsic value on exercise (for ITM options at expiry). For
-  futures, STT is 0.0125% on sell side.
+- **STT (Securities Transaction Tax)**, rates effective 1 April 2026 (Budget 2026-27):
+  - Options sold: 0.15% of premium (sell side).
+  - Options exercised (ITM at expiry): 0.15% of intrinsic value, paid by the buyer.
+  - Futures: 0.05% of turnover on the sell side.
 - **Brokerage:** Varies by broker (Groww charges per-order flat fees).
 - **Exchange charges, GST, SEBI turnover fee, stamp duty** also apply.
 
@@ -172,7 +181,7 @@ This skill uses broker MCP tools for live market data and execution support. Use
 10. **Short Straddle** — Short ATM Call + Short ATM Put
     - Objective: Profit from time decay when expecting range-bound movement.
     - Best when: Low implied volatility expected, range-bound market.
-    - Indian note: Very popular on weekly expiry day for Nifty/Bank Nifty.
+    - Indian note: Very popular on Nifty weekly expiry day (Tuesday).
 
 11. **Long Strangle** — Long OTM Call + Long OTM Put
     - Objective: Cheaper alternative to straddle for volatility plays.
@@ -389,9 +398,10 @@ Use this decision tree to recommend strategies based on user's market view:
 - VIX typically spikes before elections, budgets, RBI policy, and global crises.
 
 ### Weekly Expiry Trading
-- **Thursday (Nifty):** Most liquid expiry. Short straddle/strangle sellers dominate.
-  Theta decay is highest on the expiry day.
-- **Wednesday (Bank Nifty):** High gamma risk. Moves can be sharp near expiry.
+- **Tuesday (Nifty):** The only NSE weekly expiry. Short straddle/strangle sellers
+  dominate. Theta decay is highest on the expiry day.
+- **Thursday (Sensex, BSE):** The only BSE weekly expiry.
+- **Bank Nifty:** Monthly only (last Tuesday). High gamma risk near expiry.
 - Premium sellers should be cautious of gamma risk on expiry day — a small move
   in the underlying can cause large P/L swings.
 

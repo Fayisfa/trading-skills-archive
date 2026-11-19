@@ -24,7 +24,7 @@ Before writing a single line of code, articulate why the strategy should work in
 **Good hypotheses:**
 - "Stocks that gap up >3% on above-average volume after consolidation tend to continue higher for 2-5 days on NSE."
 - "Nifty 50 stocks that revert to their 20-day mean after RSI drops below 30 produce positive expectancy within 5 trading sessions."
-- "Selling strangles on Bank Nifty on Wednesday expiry with delta <0.15 captures time decay faster than gamma risk materializes."
+- "Selling strangles on Nifty on Tuesday weekly expiry with delta <0.15 captures time decay faster than gamma risk materializes."
 
 **Bad hypotheses:**
 - "This indicator combination looks good on the chart." (no edge articulated)
@@ -124,8 +124,8 @@ Apply realistic transaction costs:
 | Cost Component | Delivery (CNC) | Intraday (MIS) | F&O |
 |----------------|----------------|-----------------|-----|
 | Brokerage | ~₹20/order or 0.03% | ~₹20/order or 0.03% | ~₹20/order |
-| STT | 0.1% (buy+sell) | 0.025% (sell only) | 0.0125% (sell, options) |
-| Exchange charges | 0.00345% (NSE) | 0.00345% (NSE) | 0.05% (options) |
+| STT | 0.1% (buy+sell) | 0.025% (sell only) | Options 0.15% of premium (sell); futures 0.05% (sell) |
+| Exchange charges | 0.00297% (NSE) | 0.00297% (NSE) | Options 0.03503% of premium; futures 0.00173% |
 | GST | 18% on brokerage+exchange | 18% on brokerage+exchange | 18% on brokerage+exchange |
 | Stamp duty | 0.015% (buy) | 0.003% (buy) | 0.003% (buy) |
 | SEBI charges | 0.0001% | 0.0001% | 0.0001% |
