@@ -31,7 +31,7 @@ from report_generator import generate_reports
 
 def get_universe(universe: str, custom_tickers: str | None = None) -> list[str]:
     """Get stock universe tickers in yfinance format (.NS suffix)."""
-    if universe == "custom" and custom_tickers:
+    if custom_tickers:  # --custom-tickers alone is enough; no need for --universe custom
         tickers = [t.strip().upper() for t in custom_tickers.split(",")]
         return [f"{t}.NS" for t in tickers if t]
 
